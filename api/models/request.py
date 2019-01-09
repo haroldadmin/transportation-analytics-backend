@@ -6,6 +6,7 @@ def add_models_to_namespace(namespace):
 
 
 route_request_model = Model("Represents a Route Request", {
+    "id": fields.Integer(description="Unique identifier for the ride"),
     "start_point_lat": fields.Float(description="Represents the latitude of the starting point"),
     "start_point_long": fields.Float(description="Represents the longitude of the starting point"),
     "end_point_lat": fields.Float(description="Represents the latitude of the ending point"),
