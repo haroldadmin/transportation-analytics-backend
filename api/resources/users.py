@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Namespace, Resource, marshal
 
-from api.models.user_model import user_model
+from api.models.user_model import user_model, user_register_request_model
 from api.models.user_model import add_models_to_namespace
 from database.models.user import UserModel
 
@@ -37,7 +37,7 @@ class UserProfile(Resource):
 class UserRegister(Resource):
 
     @classmethod
-    @ns.marshal_with(user_model)
+    @ns.expect(user_register_request_model, validate=True)
     def post(cls):
         data = request.json
 
@@ -47,4 +47,4 @@ class UserRegister(Resource):
         user = UserModel(name, bio)
         user.save_to_db()
 
-        return user, 200
+        return marshal(user, user_model), 200

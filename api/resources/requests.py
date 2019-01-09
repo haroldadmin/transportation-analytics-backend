@@ -12,6 +12,7 @@ add_models_to_namespace(ns)
 class RequestsCollection(Resource):
 
     @classmethod
+    @ns.marshal_list_with(route_request_model)
     def get(cls):
         return RouteRequestModel.query.all()
 
