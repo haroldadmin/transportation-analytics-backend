@@ -30,3 +30,26 @@ class RouteRequest(Resource):
                    }, 404
 
         return marshal(req, route_request_model), 200
+
+
+@ns.route("/")
+class CreateRouteRequest(Resource):
+
+    @classmethod
+    def post(cls):
+        data = request.json
+
+        start_point_lat = data["start_point_lat"]
+        start_point_long = data["start_point_long"]
+        end_point_lat = data["end_point_lat"]
+        end_point_long = data["end_point_long"]
+        user_id = 1
+
+        route_request = RouteRequestModel(start_point_lat,
+                                          start_point_long,
+                                          end_point_lat,
+                                          end_point_long)
+
+        route_request.user_id = user_id
+        route_request.save_to_db()
+        return marshal(route_request, route_request_model), 200
