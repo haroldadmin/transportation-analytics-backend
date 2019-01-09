@@ -5,7 +5,7 @@ from api.models import user_model
 from api.models.user_model import add_models_to_namespace
 from database.models.user import UserModel
 
-ns = Namespace("users", "Operations related to users")
+ns = Namespace("users", description="Operations related to users")
 add_models_to_namespace(ns)
 
 
