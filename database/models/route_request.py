@@ -15,7 +15,7 @@ class RouteRequestModel(db.Model):
     end_point_lat = db.Column(db.Float, nullable=False)
     start_point_long = db.Column(db.Float, nullable=False)
     end_point_long = db.Column(db.Float, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
     def save_to_db(self):
         db.session.add(self)
