@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Namespace, Resource, marshal
 
-from api.models import user_model
+from api.models.user_model import user_model
 from api.models.user_model import add_models_to_namespace
 from database.models.user import UserModel
 
@@ -33,7 +33,7 @@ class UserProfile(Resource):
         return marshal(user, user_model), 200
 
 
-@ns.route("users")
+@ns.route("/")
 class UserRegister(Resource):
 
     @classmethod

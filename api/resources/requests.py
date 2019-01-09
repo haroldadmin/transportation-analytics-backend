@@ -16,7 +16,7 @@ class RequestsCollection(Resource):
         return RouteRequestModel.query.all()
 
 
-@ns.route("/<int:req_id")
+@ns.route("/<int:req_id>")
 @ns.param("user_id", "The ID of the requested route request")
 class RouteRequest(Resource):
 
