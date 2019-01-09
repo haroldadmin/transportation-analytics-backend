@@ -23,6 +23,11 @@ def initialize_app(flask_app):
     db.init_app(flask_app)
 
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
 if __name__ == "__main__":
     initialize_app(app)
     app.run(debug=settings.FLASK_DEBUG)
