@@ -11,7 +11,7 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
-    requests = db.relationship("RequestModel", backref="requests", lazy=True)
+    requests = db.relationship("RouteRequestModel", backref="user", lazy=True)
 
     def save_to_db(self):
         db.session.add(self)

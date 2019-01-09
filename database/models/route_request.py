@@ -1,7 +1,7 @@
 from database import db
 
 
-class RequestModel(db.Model):
+class RouteRequestModel(db.Model):
     __tablename__ = "requests"
 
     def __init__(self, start_point_lat, start_point_long, end_point_lat, end_point_long):
