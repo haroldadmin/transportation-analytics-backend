@@ -4,6 +4,7 @@ from flask import request
 from flask_jwt_extended import create_access_token, jwt_required
 from flask_restplus import Namespace, Resource, marshal
 
+from api.models.request import route_request_model
 from api.models.user_model import add_models_to_namespace, user_login_request_model
 from api.models.user_model import user_model, user_register_request_model
 from api.resources.common import auth_header_parser
@@ -39,6 +40,25 @@ class UserProfile(Resource):
                    }, 404
 
         return marshal(user, user_model), 200
+
+
+@ns.route("/<int:user_id>/requests")
+class UserRouteRequestsCollection(Resource):
+
+    @classmethod
+    @jwt_required
+    @ns.expect(auth_header_parser)
+    @ns.marshal_list_with(route_request_model)
+    def get(cls, user_id):
+        user = UserModel.query.get(user_id)
+
+        if not user:
+            return {
+                "message": "User not found"
+            }, 404
+
+        route_requests = user.requests
+        return route_requests
 
 
 @ns.route("/register")

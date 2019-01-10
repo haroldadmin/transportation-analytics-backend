@@ -1,5 +1,6 @@
 # SQLAlchemy settings
 import os
+from datetime import timedelta
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -12,3 +13,6 @@ FLASK_DEBUG = True  # Do not use debug mode in production
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 if not JWT_SECRET_KEY:
     raise ValueError("JWT_SECRET_KEY environment variable not defined")
+
+# Flask JWT settings
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)
