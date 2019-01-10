@@ -6,9 +6,10 @@ from database import db
 class UserModel(db.Model):
     __tablename__ = "users"
 
-    def __init__(self, name, bio=""):
+    def __init__(self, name, email, password):
         self.name = name
-        self.bio = bio
+        self.email = email
+        self.set_password(password)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)

@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import Namespace, Resource, marshal
 
-from api.models.user_model import user_model, user_register_request_model
 from api.models.user_model import add_models_to_namespace
+from api.models.user_model import user_model, user_register_request_model
 from database.models.user import UserModel
 
 ns = Namespace("users", description="Operations related to users")
@@ -42,9 +42,20 @@ class UserRegister(Resource):
         data = request.json
 
         name = data["name"]
-        bio = data["bio"]
+        email = data["email"]
+        password = data["password"]
 
-        user = UserModel(name, bio)
+        if UserModel.query.filter_by(email=email).first() is not None:
+            return {
+                       "message": "User with this email address is already registered"
+                   }, 400
+
+        user = UserModel(name=name,
+                         email=email,
+                         password=password)
+
         user.save_to_db()
 
-        return marshal(user, user_model), 200
+        return {
+                   "message": "User registered successfully"
+               }, 201
