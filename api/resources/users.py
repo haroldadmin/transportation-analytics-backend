@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta
+
 from flask import request
+from flask_jwt_extended import create_access_token
 from flask_restplus import Namespace, Resource, marshal
 
-from api.models.user_model import add_models_to_namespace
+from api.models.user_model import add_models_to_namespace, user_login_request_model
 from api.models.user_model import user_model, user_register_request_model
 from database.models.user import UserModel
 
@@ -33,7 +36,7 @@ class UserProfile(Resource):
         return marshal(user, user_model), 200
 
 
-@ns.route("/")
+@ns.route("/register")
 class UserRegister(Resource):
 
     @classmethod
@@ -59,3 +62,30 @@ class UserRegister(Resource):
         return {
                    "message": "User registered successfully"
                }, 201
+
+
+@ns.route("/login")
+class UserLogin(Resource):
+
+    @classmethod
+    @ns.expect(user_login_request_model, validate=True)
+    def post(cls):
+        data = request.json
+
+        email = data["email"]
+        password = data["password"]
+
+        user = UserModel.query.filter_by(email=email).first()
+
+        if not user.check_password(password):
+            return {
+                       "message": "Invalid credentials"
+                   }, 400
+
+        access_token = create_access_token(identity=user.id)
+        expiry_time = datetime.utcnow() + timedelta(weeks=1)
+
+        return {
+                   "access_token": access_token,
+                   "expiry": expiry_time.timestamp()
+               }, 200
