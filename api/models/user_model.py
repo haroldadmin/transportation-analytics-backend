@@ -8,6 +8,7 @@ def add_models_to_namespace(namespace):
 
 
 user_model = Model("Represents a user on our system", {
+    "id": fields.Integer(description="Unique identifier for the user"),
     "name": fields.String(description="Name of the user"),
     "email": fields.String(description="Email of the user")
 })

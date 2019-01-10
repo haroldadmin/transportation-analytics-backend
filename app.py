@@ -33,4 +33,4 @@ def create_tables():
 
 if __name__ == "__main__":
     initialize_app(app)
-    app.run(debug=settings.FLASK_DEBUG)
+    app.run(host="0.0.0.0", debug=settings.FLASK_DEBUG)

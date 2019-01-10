@@ -1,10 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from flask import request
 from flask_jwt_extended import create_access_token, jwt_required
 from flask_restplus import Namespace, Resource, marshal
 
-from app import app
+import settings
 from api.models.request import route_request_model
 from api.models.user_model import add_models_to_namespace, user_login_request_model
 from api.models.user_model import user_model, user_register_request_model
@@ -109,7 +109,7 @@ class UserLogin(Resource):
                    }, 400
 
         access_token = create_access_token(identity=user.id)
-        expiry_time = datetime.utcnow() + app.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+        expiry_time = datetime.utcnow() + settings.JWT_ACCESS_TOKEN_EXPIRES
 
         return {
                    "access_token": access_token,
