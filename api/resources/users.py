@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
 
 from flask import request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 from flask_restplus import Namespace, Resource, marshal
 
 from api.models.user_model import add_models_to_namespace, user_login_request_model
 from api.models.user_model import user_model, user_register_request_model
+from api.resources.common import auth_header_parser
 from database.models.user import UserModel
 
 ns = Namespace("users", description="Operations related to users")
@@ -16,6 +17,8 @@ add_models_to_namespace(ns)
 class UserCollection(Resource):
 
     @classmethod
+    @jwt_required
+    @ns.expect(auth_header_parser)
     @ns.marshal_with(user_model)
     def get(cls):
         return UserModel.query.all()
@@ -26,6 +29,8 @@ class UserCollection(Resource):
 class UserProfile(Resource):
 
     @classmethod
+    @jwt_required
+    @ns.expect(auth_header_parser)
     def get(cls, user_id):
         user = UserModel.query.get(user_id)
         if not user:
