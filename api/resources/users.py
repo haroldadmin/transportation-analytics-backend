@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import request
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_restplus import Namespace, Resource, marshal
 
 import settings
@@ -15,7 +15,7 @@ ns = Namespace("users", description="Operations related to users")
 add_models_to_namespace(ns)
 
 
-@ns.route("/")
+@ns.route("/all")
 class UserCollection(Resource):
 
     @classmethod
@@ -26,9 +26,26 @@ class UserCollection(Resource):
         return UserModel.query.all()
 
 
+@ns.route("/")
+class UserProfile(Resource):
+
+    @classmethod
+    @jwt_required
+    @ns.expect(auth_header_parser)
+    def get(cls):
+        id = get_jwt_identity()
+        user = UserModel.query.get(id)
+        if not user:
+            return {
+                "message": "User not found"
+            }, 404
+
+        return marshal(user, user_model), 200
+
+
 @ns.route("/<int:user_id>")
 @ns.param("user_id", "The ID of the requested user")
-class UserProfile(Resource):
+class OtherUserProfile(Resource):
 
     @classmethod
     @jwt_required
