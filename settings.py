@@ -17,3 +17,4 @@ if not JWT_SECRET_KEY:
 
 # Flask JWT settings
 JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)
+JWT_REFRESH_TOKEN_EXPIRES = timedelta(weeks=1)
